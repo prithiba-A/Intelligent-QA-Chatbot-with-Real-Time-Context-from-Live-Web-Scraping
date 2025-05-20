@@ -1,0 +1,94 @@
+Requirements:
+1.Python 3.6+
+2.requests, beautifulsoup4, lxml
+3.Hugging Face API token
+4.Internet connection
+5.Hugging Face model access (e.g., mistralai/Mixtral-8x7B-Instruct-v0.1)
+6.Virtual Studio code
+
+
+Step-by-Step Explanation of the Code
+
+1. Importing Libraries
+   - requests: Used to send HTTP requests to get the content from the website and communicate with the Hugging Face API.
+   - BeautifulSoup: Used to parse the HTML content of a webpage and extract useful text (i.e., to scrape the website).
+
+2. Hugging Face API Token
+   - This line stores your Hugging Face API token that you use for authenticating API requests.
+
+3. Function: fetch_website_text (Step 1)
+   - fetch_website_text(url): This function is responsible for scraping the content from a given URL.
+      1. Send Request: requests.get(url) sends an HTTP GET request to the provided URL.
+      2. Parse HTML: The HTML response is passed to BeautifulSoup to parse the content.
+      3. Remove Unnecessary Tags: It removes all <script>, <style>, and <noscript> tags to avoid processing unnecessary elements.
+      4. Extract Text: soup.get_text(separator=" ") extracts all the readable text from the HTML. The separator=" " ensures that the text is split by spaces.
+      5. Return Cleaned Text: The function returns a cleaned-up string of text.
+
+4. Load Website Content (Step 2)
+   - Here, you specify the URL of the website you want to scrape (https://botpenguin.com/) and call the fetch_website_text function to get the text content from the site.
+   - The result is stored in the website_content variable.
+
+5. Function: chat_with_huggingface (Step 3)
+   - chat_with_huggingface(user_input, context): This function communicates with the Hugging Face API to generate a response from a language model (in this case, the mistralai/Mixtral-8x7B-Instruct-v0.1 model).
+      1. Prompt Formatting: It creates a prompt to send to the model. The prompt contains the context (scraped website text) and the user's input.
+      2. API Request: The function sends a POST request to Hugging Face’s inference API (https://api-inference.huggingface.co/models/mistralai/Mixtral-8x7B-Instruct-v0.1), passing the formatted prompt in the payload. It includes the Hugging Face API token for authentication.
+      3. Handling Response: 
+         - If the response is successful (status_code == 200), it processes the returned text (which contains the model’s answer) and extracts the part after "Chatbot:" to cleanly return the response.
+         - If there’s an error (e.g., bad API response), it returns an error message.
+
+6. Run Console Chatbot (Step 4)
+   - run_chatbot(): This is the main function that runs the console-based chatbot.
+      1. Greeting: It starts by printing a greeting message and instructions for the user.
+      2. User Input: Inside a loop, the program waits for the user to type input (input("You: ")).
+      3. Exit Condition: If the user types exit or quit, the program will print a goodbye message and break the loop.
+      4. Chatbot Response: Otherwise, it sends the user input and the first 3000 characters of the scraped website content to the chat_with_huggingface function for generating a response.
+      5. Print Response: The chatbot’s reply is printed.
+
+7. Start the Chatbot
+   - This line ensures that the run_chatbot() function is executed when the script is run directly (not imported as a module).
+
+
+ Flow of Execution:
+1. Start: The script starts by scraping the website content (fetch_website_text), which is then stored in the website_content variable.
+2. User Input: The chatbot waits for user input.
+3. Generate Response: The input is passed to the Hugging Face model, along with the website content.
+4. API Request: The script sends the prompt to the Hugging Face API to get a response.
+5. Output: The model processes the input and returns an answer, which is displayed to the user.
+6. Repeat: The process repeats, allowing the user to ask more questions until they type exit or quit.
+
+This is how the chatbot works and interacts with the user step-by-step.
+
+
+Website - https://www.flipkart.com/
+Questions:
+About Flipkart in General:
+    1."What is Flipkart?"
+    2."Which categories are available on Flipkart?"
+    3."How does Flipkart deliver products?"
+    4."What types of electronics are sold on Flipkart?"
+
+Deals and Offers:
+    5."Are there any ongoing offers?"
+    6."What are the big savings deals on Flipkart?"
+
+Customer Services / Policies:
+    7."How does Flipkart handle returns?"
+    8."Is there a customer support option on Flipkart?"
+    9."What payment methods does Flipkart support?"
+
+Brands and Products (as scraped from homepage):
+    10."Does Flipkart sell Apple products?"
+    11."Is Samsung available on Flipkart?"
+    12."What are some popular brands on Flipkart?"
+
+Other Questions Based on Homepage Snippets:
+    13."Does Flipkart offer furniture or home decor?"
+    14."Can I find books or stationery on Flipkart?"
+
+
+
+
+
+
+
+
